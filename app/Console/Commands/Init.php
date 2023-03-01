@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 
 
 class Init extends Command
@@ -13,7 +12,9 @@ class Init extends Command
      *
      * @var string
      */
-    protected $signature = 'init';
+    protected $signature = 'init
+                            {--php-path= : php path}
+                            ';
 
     /**
      * The console command description.
@@ -31,14 +32,19 @@ class Init extends Command
 
     public function handle(): void
     {
+        $arr = [
+            'APP_KEY' => 'base64:'.base64_encode(random_bytes(32)),
+        ];
+        if($this->option('php-path')){
+            $arr['PHP_PATH']=$this->option('php-path');
+        }
+
         $db_file = fopen(config('database.connections.sqlite.database'), 'wb') or die("Unable to create database file!");
         fclose($db_file);
         $this->info('Successfully created database file!');
         file_put_contents(base_path('.env'),file_get_contents(base_path('.env.example')));
         $this->info('Successfully generated .env file!');
-        $this->updateEnv([
-            'APP_KEY' => 'base64:'.base64_encode(random_bytes(32)),
-        ]);
+        $this->updateEnv($arr);
         $this->info('Successfully set application key');
     }
 
