@@ -16,6 +16,8 @@ return [
 
     'name' => env('APP_NAME', 'Akaunting'),
 
+    'php_path' => env('PHP_PATH', Application::phpBinary()),
+
     'installed' => (bool) env('APP_INSTALLED', false),
 
     'schedule_time' => env('APP_SCHEDULE_TIME', '09:00'),
