@@ -11,7 +11,7 @@ class Console
 {
     public static function run($string, $timeout = 0)
     {
-        $command = Application::formatCommandString($string);
+        $command = sprintf('%s %s %s', config("app.php_path", Application::phpBinary()), Application::artisanBinary(), $string);
 
         logger('Console command:: ' . $command);
 
